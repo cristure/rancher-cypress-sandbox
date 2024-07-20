@@ -21,8 +21,23 @@ describe('main page', () => {
     // assert title
     cy.title().should('eq', global.title)
 
-    // assert logo is visible
-    cy.get("div.side-menu-logo:nth-child(1)", {timeout: 60000})
+    // assert logo is visible.
+    cy.get(".simple-title", {timeout: 5000})
         .should("be.visible")
+
+    // assert top level menu is visible.
+    cy.get('[data-testid="top-level-menu"]')
+        .should("be.visible")
+
+    // assert user menu is visible.
+    cy.get('[data-testid="nav_header_showUserMenu"]')
+        .should("be.visible")
+
+    // click on user menu.
+    cy.get('[data-testid="nav_header_showUserMenu"]')
+        .click()
+
+    // assert session cookie exists.
+    cy.getCookie("R_SESS").should("exist")
   })
 })

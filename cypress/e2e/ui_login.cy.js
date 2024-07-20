@@ -7,43 +7,59 @@ describe('ui login', () => {
 
   it('login should work', () => {
     // fill in username.
-    cy.get("#username")
+    cy.get('[data-testid="local-login-username"]')
         .type(global.username);
 
     // fill in password.
-    cy.get(".suffix > input:nth-child(2)")
+    cy.get('[data-testid="local-login-password"]')
         .type(global.password)
 
     // click on submit button.
-    cy.get("#submit")
+    cy.get('[data-testid="login-submit"]')
         .click()
 
-    // assert title
+    // assert title.
     cy.title().should('eq', global.title)
 
-    // assert logo is visible
-    cy.get("div.side-menu-logo:nth-child(1)", {timeout: 5000})
+    // assert logo is visible.
+    cy.get(".simple-title", {timeout: 5000})
         .should("be.visible")
+
+    // assert top level menu is visible.
+    cy.get('[data-testid="top-level-menu"]')
+        .should("be.visible")
+
+    // assert session cookie exists.
+    cy.getCookie("R_SESS").should("exist")
   })
 
   it('login shouldn\'t work', () => {
-    cy.get("#username")
+    // fill in wrong username.
+    cy.get('[data-testid="local-login-username"]')
         .type("not_admin");
 
-    cy.get(".suffix > input:nth-child(2)")
+    // fil in wrong password.
+    cy.get('[data-testid="local-login-password"]')
         .type("not_password")
 
-    cy.get("#submit")
+    // click on submit button.
+    cy.get('[data-testid="login-submit"]')
         .click()
 
-    cy.get(".login-messages")
+    // assert banner content is visible.
+    cy.get('[data-testid="banner-content"]')
         .should("be.visible")
 
-    cy.get(".login-messages")
+    // assert banner content contains error message.
+    cy.get('[data-testid="banner-content"]')
         .contains("Invalid username or password. Please try again.")
 
-    cy.get("#submit")
+    // assert submit button shows Error.
+    cy.get('[data-testid="login-submit"]')
         .contains("Error")
+
+    // assert session cookie does not exists.
+    cy.getCookie("R_SESS").should("not.exist")
   })
 
 })
