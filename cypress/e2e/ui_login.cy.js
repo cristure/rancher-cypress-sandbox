@@ -18,6 +18,9 @@ describe('ui login', () => {
     cy.get('[data-testid="login-submit"]')
         .click()
 
+    // assert redirect after login.
+    cy.url().should('include', '/dashboard/home')
+
     // assert title.
     cy.title().should('eq', global.title)
 

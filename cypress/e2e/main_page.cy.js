@@ -18,6 +18,9 @@ describe('main page', () => {
   })
 
   it('main page reached', () => {
+    // assert redirect after login.
+    cy.url().should('include', '/dashboard/home')
+
     // assert title
     cy.title().should('eq', global.title)
 
@@ -32,10 +35,6 @@ describe('main page', () => {
     // assert user menu is visible.
     cy.get('[data-testid="nav_header_showUserMenu"]')
         .should("be.visible")
-
-    // click on user menu.
-    cy.get('[data-testid="nav_header_showUserMenu"]')
-        .click()
 
     // assert session cookie exists.
     cy.getCookie("R_SESS").should("exist")
